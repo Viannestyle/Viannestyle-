@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AchatPlus - Accueil</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        header {
+            background-image: url('ACHAT PLUS.jpg'); /* Image d'arrière-plan e-commerce */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            position: relative;
+            min-height: 200px; /* Hauteur minimale pour conserver la taille */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        .top-bar, .search-bar {
+            position: relative;
+            z-index: 2;
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 2;
+        }
+
+        .menu-icon {
+            font-size: 28px;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+            display: none;
+        }
+
+        .menu-icon:hover {
+            background-color: #F5F5F5;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: absolute;
+            top: 60px;
+            right: 20px;
+            background-color: #fff;
+            padding: 15px 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.41);
+            z-index: 1000;
+            flex-direction: column;
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-menu li {
+            margin: 10px 0;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: #333333;
+            font-weight: bold;
+        }
+
+        .menu-icon {
+            display: block;
+        }
+        
+        .search-bar {
+            width: 60%;
+            margin: 30px auto;
+            display: flex;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.59);
+            border-radius: 30px;
+            overflow: hidden;
+        }
+        
+        .search-bar input {
+            flex: 1;
+            padding: 14px 20px;
+            font-size: 2px solid #000000;
+            border-right: none;
+            font-size: 16px;
+            outline: none;
+        }
+        
+        .search-bar button {
+            padding: 14px 25px;
+            background-color: #FFD500;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        .search-bar button:hover {
+            background-color: #FFD500;
+        }
+        
+        /* Catégories avec dégradé jaune/noir */
+        .categories-section {
+            padding: 20px 0;
+            background: linear-gradient(135deg, #000000 30%, #FFD500 100%);
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            position: relative;
+        }
+
+        .categories-title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            font-size: 22px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .categories-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+            position: relative;
+            z-index: 1;
+        }
+
+        .categories-container::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category {
+            padding: 12px 25px;
+            white-space: nowrap;
+            font-weight: bold;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            margin: 0 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+            backdrop-filter: blur(5px);
+        }
+
+        .category:hover {
+            background-color: #FFBB13;
+            color: #FFFFFF;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 1);
+            border-color: #FFD500;
+        }
+
+        .category.active {
+            background-color: #000000;
+            color: #FFD500;
+            border-color: #FFD500;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        }
+
+        .categories-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 15px;
+            gap: 10px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .categories-controls button {
+            padding: 8px 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: #FFD500;
+            border: 1px solid #FFD500;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .categories-controls button:hover {
+            background-color: #FFD500;
+            color: #000000;
+            transform: scale(1.05);
+        }
+        
+        /* Promotions */
+        .promotions {
+            padding: 40px 20px;
+            background-color: #f8f8f8;
+            font-family: sans-serif;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .promotions-title {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #2C3E50;
+        }
+
+        .promotions-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .main-promotions {
+            flex: 2;
+        }
+
+        .promotion-slider {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .slide {
+            position: relative;
+            height: 200px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slide img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            top: 0;
+            left: 0;
+            opacity: 0.7;
+        }
+
+        .slide span {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 22px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.52);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        .side-promotions {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .side-promo {
+            position: relative;
+            height: 150px;
+            border-radius: 10px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .side-promo img {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            top: 0;
+            left: 0;
+            opacity: 0.7;
+        }
+
+        .side-promo span {
+            position: relative;
+            z-index: 1;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.42);
+            padding: 8px 16px;
+            border-radius: 5px;
+        }
+
+        .more-promotions {
+            height: 150px;
+            background-color: #2C3E50;
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.91);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+
+        .more-promotions:hover {
+            background-color: #1A252F;
+        }       
+        .promotion-slider {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.48);
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 10px;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .slide.active {
+            opacity: 1;
+            z-index: 1;
+        }
+
+        .slide video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        } 
+        
+        /* Produits */
+        .products {
+            padding: 0 20px;
+            margin-bottom: 40px;
+        }
+        
+        .products-title {
+            font-size: 26px;
+            margin-bottom: 20px;
+            color: #FFD500;
+            text-align: center;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .products-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: #FFD500;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        
+        .product {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .product:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+        }
+        
+        .product-image {
+            width: 100%;
+            height: 180px;
+            background-color: #f8f8f8;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            color: #666;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .product-name {
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 18px;
+            color: #333;
+        }
+        
+        .product-price {
+            color: #FFD500;
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: auto;
+        }
+        
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: #2D2D2D;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .footer-logo {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #FFD500;
+        }
+        
+        .footer-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-copyright {
+            font-size: 16px;
+            color: #bdc3c7;
+            margin-top: 20px;
+        }
+        
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .search-bar {
+                width: 90%;
+            }
+            
+            .promotions-container {
+                flex-direction: column;
+            }
+            
+            .products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="top-bar">
+            <div class="menu-icon" onclick="toggleMenu()">☰</div>
+        </div>
+
+        <nav class="mobile-menu" id="mobileMenu">
+            <ul>
+                <li><a href="Accueil.html">Accueil</a></li>
+                <li><a href="Produits.html">Produits</a></li>
+                <li><a href="Panier.html">Panier</a></li>
+                <li><a href="Contact.html">Contact</a></li>
+                <li><a href="A_propos.html">À propos</a></li>
+            </ul>
+        </nav>
+        
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Rechercher un produit...">
+            <button onclick="searchProducts()">Rechercher</button>
+        </div>
+    </header>
+    
+    <section class="categories-section">
+        <h2 class="categories-title">Catégories</h2>
+        <div class="categories-container" id="categoriesContainer">
+            <div class="category active" data-category="all">Tous les produits</div>
+            <div class="category" data-category="electronics">Électronique</div>
+            <div class="category" data-category="fashion">Mode</div>
+            <div class="category" data-category="home">Maison</div>
+            <div class="category" data-category="beauty">Beauté</div>
+            <div class="category" data-category="sports">Sport</div>
+            <div class="category" data-category="toys">Jouets</div>
+            <div class="category" data-category="books">Livres</div>
+            <div class="category" data-category="automotive">Auto</div>
+            <div class="category" data-category="health">Santé</div>
+        </div>
+        <div class="categories-controls">
+            <button id="scrollLeft">←</button>
+            <button id="scrollRight">→</button>
+        </div>
+    </section>
+    
+    <section class="promotions">
+        <h2 class="promotions-title">Promotions du mois</h2>
+        <div class="promotions-container">
+            <div class="main-promotions">
+                <div class="promotion-slider">
+                    <a href="" class="slide active">
+                        <img src="Kit clavier et sourie.3" alt="Promotion 1">
+                        <span>Promotion 1 -50%</span>
+                    </a>
+                    
+                    <a href="" class="slide">
+                        <img src="X6" alt="Promotion 2">
+                        <span>Promotion 2 -30%</span>
+                    </a>
+                    
+                    <a href="" class="slide">
+                        <img src="Kit clavier et sourie" alt="Promotion 3">
+                        <span>Promotion 3 -40%</span>
+                    </a>
+                    
+                    <div class="slide">
+                        <video autoplay muted loop playsinline>
+                            <source src="000.webm" type="video/mp4">
+                            Votre navigateur ne supporte pas la vidéo HTML5.
+                        </video>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="side-promotions">
+                <div class="side-promo">
+                    <img src="X6.2" alt="Promotion 5">
+                    <span>Promotion 5</span>
+                </div>
+                
+                <div class="side-promo">
+                    <img src="X6.3" alt="Promotion 6">
+                    <span>Promotion 6</span>
+                </div>
+                
+                <div class="more-promotions">Voir plus de promotions</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="products">
+        <h2 class="products-title">Nos produits</h2>
+        
+        <div class="products-grid" id="productsGrid">
+            <a href='Kit.vlogging.html' class="product" data-category="electronics">
+                <div class="product-image">
+                    <img src="Kit.vlogging.jpg" alt="Vlogging" >
+                </div>
+                <div class="product-name">Kit Vlogging avec télécommande</div>
+                <div class="product-price">8.500 FCFA</div>
+            </a>
+            
+            <a href="BRAND.html" class="product" data-category="electronics">
+                <div class="product-image">
+                    <img src="BRAND.jpg" alt="">
+                </div>
+                <div class="product-name">Caméra de Poche Stabilisée BRAND marque Asiatique.</div>
+                <div class="product-price">30.000 FCFA</div>
+            </a>
+            
+            <a href="Peignoir_nuit_en_dentelle.html" class="product" data-category="fashion">
+                <div class="product-image">
+                    <img src="Peignoir_nuit_en_dentelle.jpg" alt="vetement">
+                </div>
+                <div class="product-name">Peignoir Nuit en Dentelle Transparente</div>
+                <div class="product-price">7.500 FCFA</div>
+            </a>
+            
+            <a href="Diffuseur_d-ambiance_a_batonnets.html" class="product" data-category="home">
+                <div class="product-image">
+                    <img src="Diffuseur_d-ambiance_a_batonnets.jpg" alt="parfum">
+                </div>
+                <div class="product-name">Diffuseur d'Ambiance à Bâtonnets – 50 millilitres</div>
+                <div class="product-price">2.500 FCFA</div>
+            </a>
+            
+            <a href="Sup_game_box.html" class="product" data-category="toys">
+                <div class="product-image">
+                    <img src="Sup_game_box.jpg" alt="game">
+                </div>
+                <div class="product-name">Sup Game Box 400 in 1 Plus </div>
+                <div class="product-price">10.000 FCFA</div>
+            </a>
+            
+            <a href='Support_d-ordinateur_en_acier.html' class="product" data-category="electronics">
+                <div class="product-image">
+                    <img src="Support_d-ordinateur_en_acier.jpg" alt="support">
+                </div>
+                <div class="product-name">Support d'ordinateur en acier</div>
+                <div class="product-price">5.000 FCFA</div>
+            </a>
+            
+            <a href='X6.html' class="product" data-category="toys">
+                <div class="product-image">
+                    <img src='X6' alt='jeu'>
+                </div>
+                <div class="product-name">X6</div>
+                <div class="product-price"> 25.000 FCFA</div>
+            </a>
+            
+            <a href='Lampe_Ambiance_Lunaire_en_Cristal.html' class="product" data-category="electronics">
+                <div class="product-image">
+                    <img src="Lampe_Ambiance_Lunaire_en_Cristal.jpg" alt="lampe">
+                </div>
+                <div class="product-name">Lampe Ambiance Lunaire en Cristal</div>
+                <div class="product-price">6.500 FCFA</div>
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-logo">AchatPlus</div>
+        <div class="footer-text">Partout au Congo</div>
+        <div class="footer-copyright">© 2026 AchatPlus - Tous droits réservés</div>
+    </footer>
+    
+    <script>
+        const searchInput = document.getElementById("searchInput");
+
+        // Recherche automatique pendant la saisie
+        searchInput.addEventListener("input", () => {
+            filterProducts(searchInput.value);
+        });
+
+        // Fonction utilisée aussi par le bouton
+        function searchProducts() {
+            filterProducts(searchInput.value);
+        }
+
+        function filterProducts(value) {
+            const input = value.toLowerCase();
+            const products = document.querySelectorAll(".product");
+
+            products.forEach(product => {
+                const name = product.querySelector(".product-name").textContent.toLowerCase();
+                product.style.display = name.includes(input) ? "flex" : "none";
+            });
+        }
+        
+        function toggleMenu() {
+            const menu = document.getElementById("mobileMenu");
+            menu.style.display = menu.style.display === "block" ? "none" : "block";
+        }
+        
+        // Barre de recherche fonctionnelle
+        document.querySelector('.search-bar button').addEventListener('click', function() {
+            const searchTerm = document.querySelector('.search-bar input').value;
+            if (searchTerm.trim() !== '') {
+                alert('Recherche pour: ' + searchTerm);
+                // Ici, vous pouvez ajouter la logique de recherche réelle
+            }
+        });
+        
+        document.querySelector('.search-bar input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.querySelector('.search-bar button').click();
+            }
+        });
+        
+        // Slider de promotions
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let slideInterval;
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            showSlide(currentSlide);
+
+            // Définir durée spéciale pour le 4e slide
+            let delay = (currentSlide === 3) ? 30000 : 3000;
+
+            slideInterval = setTimeout(nextSlide, delay);
+        }
+
+        // Démarrer le slider
+        showSlide(currentSlide);
+        slideInterval = setTimeout(nextSlide, 3000);
+        
+        // Curseur de catégories manipulable
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const scrollLeftBtn = document.getElementById('scrollLeft');
+        const scrollRightBtn = document.getElementById('scrollRight');
+        const categories = document.querySelectorAll('.category');
+        const products = document.querySelectorAll('.product');
+        
+        // Défilement des catégories
+        scrollLeftBtn.addEventListener('click', function() {
+            categoriesContainer.scrollBy({
+                left: -200,
+                behavior: 'smooth'
+            });
+        });
+        
+        scrollRightBtn.addEventListener('click', function() {
+            categoriesContainer.scrollBy({
+                left: 200,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Filtrage des produits par catégorie
+        categories.forEach(category => {
+            category.addEventListener('click', function() {
+                // Retirer la classe active de toutes les catégories
+                categories.forEach(cat => cat.classList.remove('active'));
+                
+                // Ajouter la classe active à la catégorie cliquée
+                this.classList.add('active');
+                
+                // Récupérer la catégorie sélectionnée
+                const selectedCategory = this.getAttribute('data-category');
+                
+                // Filtrer les produits
+                products.forEach(product => {
+                    if (selectedCategory === 'all' || product.getAttribute('data-category') === selectedCategory) {
+                        product.style.display = 'block';
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Menu hamburger
+        document.querySelector('.menu-icon').addEventListener('click', function() {
+            alert('Menu ouvert');
+            // Ici, vous pouvez ajouter la logique pour ouvrir un menu latéral
+        });
+        
+        const menuIcon = document.getElementById("menuIcon");
+        const mobileMenu = document.getElementById("mobileMenu");
+
+        // Toggle menu quand on clique sur l'icône
+        menuIcon.addEventListener("click", (e) => {
+            e.stopPropagation(); // empêche de fermer directement au clic
+            mobileMenu.classList.toggle("active");
+        });
+
+        // Fermer le menu si on clique ailleurs
+        document.addEventListener("click", (e) => {
+            if (!mobileMenu.contains(e.target) && !menuIcon.contains(e.target)) {
+                mobileMenu.classList.remove("active");
+            }
+        });
+
+        // (Optionnel) Fermer le menu quand on clique sur un lien
+        mobileMenu.querySelectorAll("a").forEach(link => {
+            link.addEventListener("click", () => {
+                mobileMenu.classList.remove("active");
+            });
+        });
+    </script>
+</body>
+</html>
